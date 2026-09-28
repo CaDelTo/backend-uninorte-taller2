@@ -190,7 +190,7 @@ curl -i http://localhost:8080/health
 El error que arroja es **502 Bad Gateway**. Esto pasa porque Nginx recibió la petición, pero no obtuvo respuesta del servidor al que tiene que redirigirla. En este caso intenta redirigirla a `localhost`, que dentro del contenedor Nginx es él mismo, y ahí no hay ningún proceso escuchando en el 3000: Nginx solamente escucha en el 8080. La API está en otro contenedor aparte. En los logs se ve `connect() failed (111: Connection refused) while connecting to upstream`, con upstream `http://127.0.0.1:3000/health` (y `[::1]:3000` en IPv6).
 
 **¿Por qué `localhost` no representa al contenedor `api`? ¿Qué comando verifica las redes Docker?**
-`localhost` no representa al contenedor API porque cada contenedor tiene su propio `localhost` y su propia IP. Con `docker network ls` vemos las redes, y con `docker network inspect taller-docker-nginx_backend` vemos qué contenedores están conectados y sus IPs. Este último comando refuerza la respuesta anterior, porque muestra que Nginx y la API tienen IPs distintas.
+`localhost` no representa al contenedor API porque cada contenedor tiene su propio `localhost` y su propia IP. Con `docker network ls` vemos las redes, y con `docker network inspect` vemos qué contenedores están conectados y sus IPs. Este último comando refuerza la respuesta anterior, porque muestra que Nginx y la API tienen IPs distintas.
 
 ![docker network ls e inspect](docs/evidencias/parte9-network-ls.png)
 
