@@ -6,8 +6,8 @@ services:
     image: backend-api
     environment:
       PORT: "3000"
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:$${PORT}/health || exit 1"]
       interval: 10s
@@ -26,6 +26,10 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    networks:
+      - backend
+  redis:
+    image: redis:7-alpine
     networks:
       - backend
 
